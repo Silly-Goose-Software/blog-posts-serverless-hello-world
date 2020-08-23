@@ -1,0 +1,29 @@
+service: hello-world
+# app and org for use with dashboard.serverless.com
+app: hello-world
+org: silly-goose
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: eu-central-1
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: hello.silly-goose.org
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateName: '*.silly-goose.org'
+    endpointType: 'regional'
